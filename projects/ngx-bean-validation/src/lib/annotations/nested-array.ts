@@ -4,8 +4,6 @@ import {FormMetadata, setName} from './common';
 /**
  * Define nested ArrayControl
  *
- * @returns {(target: any, key: string) => void}
- * @constructor
  */
 export const NestedArray = () => (target: any, key: string) => {
   let metadata = Reflect.get(target, setName(key)) as FormMetadata;

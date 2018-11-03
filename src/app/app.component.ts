@@ -1,12 +1,9 @@
 import {Component} from '@angular/core';
-import {NgxBeanValidationService} from '../../projects/ngx-bean-validation/src/lib/ngx-bean-validation.service';
 import {FormGroup} from '@angular/forms';
 import {Email} from '../../projects/ngx-bean-validation/src/lib/annotations/email';
-import {Required} from '../../projects/ngx-bean-validation/src/lib/annotations/required';
-import {RequiredTrue} from '../../projects/ngx-bean-validation/src/lib/annotations/required-true';
-import {MinLength} from '../../projects/ngx-bean-validation/src/lib/annotations/min-length';
-import {MaxLength} from '../../projects/ngx-bean-validation/src/lib/annotations/max-length';
+import {MaxLength, MinLength, Required, RequiredTrue} from '../../projects/ngx-bean-validation/src/lib/annotations';
 import {Pattern} from '../../projects/ngx-bean-validation/src/lib/annotations/pattern';
+import {BeanFormGroup} from '../../projects/ngx-bean-validation/src/lib/bean-form-group';
 
 class User {
   @Email()
@@ -27,7 +24,7 @@ class User {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  formGroup: FormGroup = this.ngxBeanValidationService.extractFromGroup(new User()).getGroup();
+  formGroup: FormGroup = new BeanFormGroup<User>(new User());
 
   get email() {
     return this.formGroup.get('email');
@@ -41,7 +38,7 @@ export class AppComponent {
     return this.formGroup.get('checkbox');
   }
 
-  constructor(private ngxBeanValidationService: NgxBeanValidationService<any>) {
+  constructor() {
   }
 
   submit() {

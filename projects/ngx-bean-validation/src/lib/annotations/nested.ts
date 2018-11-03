@@ -7,8 +7,6 @@ import {FormMetadata, setName} from './common';
  * Important notice:
  * should be only one nested annotation per class property
  *
- * @returns {(target: object, key: string) => void}
- * @constructor
  */
 export const Nested = () => (target: object, key: string) => {
   let metadata = Reflect.get(target, setName(key)) as FormMetadata;

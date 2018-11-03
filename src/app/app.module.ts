@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import {NgxBeanValidationService} from '../../projects/ngx-bean-validation/src/lib/ngx-bean-validation.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +12,7 @@ import {NgxBeanValidationService} from '../../projects/ngx-bean-validation/src/l
     ReactiveFormsModule,
     BrowserModule
   ],
-  providers: [NgxBeanValidationService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
