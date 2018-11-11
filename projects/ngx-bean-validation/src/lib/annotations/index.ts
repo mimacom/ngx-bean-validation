@@ -1,4 +1,5 @@
 export {Disabled} from './disabled';
+export {EmptyControl} from './empty-control';
 export {Max} from './max';
 export {MaxLength} from './max-length';
 export {Min} from './min';
@@ -7,3 +8,5 @@ export {Nested} from './nested';
 export {NestedArray} from './nested-array';
 export {Required} from './required';
 export {RequiredTrue} from './required-true';
+export {Pattern} from './pattern';
+export {setSyncValidator} from './common';

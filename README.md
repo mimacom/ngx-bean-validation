@@ -1,27 +1,161 @@
-# BeanValidation
+# NgxBeanValidation
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
+> Idea was taken from [Bean Validation](https://beanvalidation.org/)
 
-## Development server
+## What is the problem?
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Reactive forms are very powerful, but they become painful for big forms:
+```typescript
+class Component {
+  private userForm: FormGroup = this.formBuilder.group({
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      name: ['', Validators.compose([Validators.required, Validators.minLength(3), Validators.maxLength(40)])],
+      age: ['', Validators.compose([Validators.number, Validators.min(18), Validators.max(60)])],
+      creditCards: [{
+          cardNumber: ['', Validators.compose(Validators.isCreditCard, Validators.isMasterCard)],
+          date: ['', Validators.compose([Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)])],
+          cvv: ['', Validators.compose([Validators.required, Validators.pattern(/^[0-9]{3,4}$/)])]
+      }],
+      address: {
+          addressLine1: ['', Validators.required],
+          addressLine2: '',
+          city: ['', Validators.required],
+          region: ['', Validators.required],
+          zip: ['', Validators.compose([Validators.required, Validators.pattern(/^\d{5}(?:[-\s]\d{4})?$/)])],
+          country: ['', Validators.required]
+      },
+      deliveryDate: ['', Validators.compose([Validators.required, Validators.isDate, Validators.dateBefore(someValue), Validators.dateAfter(someValue)])]
+  });
+}
+```
 
-## Code scaffolding
+instead of this huge unreadable peace of code, I recommend using Bean Validation approach
+```typescript
+class User {
+    @Email()
+    @Required()
+    email: string;
+ 
+    @MaxLength(40)
+    @MinLength(3)
+    @Required()
+    name: string;
+ 
+    @Max(60)
+    @Min(18)
+    @Number()
+    @Required()
+    age: number;
+ 
+    @NestedArray()
+    creditCards: CreditCard[] = [new CreditCard()];
+ 
+    @Nested()
+    address: Address = new Address();
+ 
+    @DateAfter(new Date())
+    @DateBefore(new Date())
+    @IsDate()
+    @Required()
+    deliveryDate: string;
+}
+ 
+class CreditCard {
+    @IsMasterCard()
+    @IsCreditCard()
+    @Required()
+    cardNumber: string;
+ 
+    @Pattern(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)
+    @Required()
+    date: string;
+ 
+    @Pattern(/^[0-9]{3,4}$/)
+    @Required()
+    cvv: string;
+}
+ 
+class Address {
+    @Required()
+    addressLine1: string;
+ 
+    @EmptyControl()
+    @Required()
+    addressLine2: string;
+ 
+    @Required()
+    city: string;
+ 
+    @Required()
+    region: string;
+ 
+    @Pattern(/^\d{5}(?:[-\s]\d{4})?$/)
+    @Required()
+    zip: string;
+ 
+    @Required()
+    country: string;
+}
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+class Component {
+  private userForm: FormGroup = new BeanFormGroup<User>(new User());
+}
+``` 
 
-## Build
+Now we can use our classes as interface and reuse them for reactive forms.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## Contains:
 
-## Running unit tests
+This library provides `BeanFormGroup` class for creation `FormGroup` from annotated classes.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Annotations for default angular validators:
+* Max
+* MaxLength
+* Min
+* MinLength
+* Required
+* RequiredTrue
+* Pattern
 
-## Running end-to-end tests
+### Annotation for empty form control:
+* EmptyControl
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Annotation for nested FormGroup and FormArray:
+* Nested
+* NestedArray
 
-## Further help
+### Annotation for disabling form control:
+* Disabled
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Function that helps you create your own validator annotation:
+* setSyncValidator
+
+## How to use:
+Example how to create your own validator annotation:
+```typescript
+export const CustomValidator = (someValue: any): AnnotationFunction => (target: object, key: string): void => {
+  setSyncValidator(target, key, customAngularValidator(someValue));
+};
+```
+
+Now you can put it in your class:
+```typescript
+class User {
+  @CustomValidator('someValue')
+  name: string
+}
+```
+
+And create form group:
+```typescript
+class Component {
+  userForm: FromGroup = new BeanFormGroup(new User())
+}
+```
+
+## Does`t support
+* Async validators
+* FormControl and FormArray them self, only inside FormGroup
+
+## Contribution
+Are very welcome! Please share your ideas and improvements.
