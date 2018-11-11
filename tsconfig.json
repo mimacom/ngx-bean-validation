@@ -18,12 +18,6 @@
       "dom"
     ],
     "paths": {
-      "ng-bean-validation": [
-        "dist/ng-bean-validation"
-      ],
-      "ng-bean-validation/*": [
-        "dist/ng-bean-validation/*"
-      ],
       "ngx-bean-validation": [
         "dist/ngx-bean-validation"
       ],

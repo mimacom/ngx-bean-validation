@@ -1,9 +1,26 @@
 import {Component} from '@angular/core';
-import {FormGroup} from '@angular/forms';
-import {Email} from '../../projects/ngx-bean-validation/src/lib/annotations/email';
-import {MaxLength, MinLength, Required, RequiredTrue} from '../../projects/ngx-bean-validation/src/lib/annotations';
-import {Pattern} from '../../projects/ngx-bean-validation/src/lib/annotations/pattern';
-import {BeanFormGroup} from '../../projects/ngx-bean-validation/src/lib/bean-form-group';
+import {AbstractControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {BeanFormGroup, Pattern, Email, MaxLength, RequiredTrue, MinLength, setSyncValidator, AnnotationFunction} from 'ngx-bean-validation';
+
+const customRequired = (): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors => {
+    if (control.valid) {
+      const validationError = Validators.required(control);
+
+      if (validationError) {
+        return {
+          required: 'Custom required'
+        };
+      }
+    }
+
+    return null;
+  };
+};
+
+export const CustomRequired = (): AnnotationFunction => (target: object, key: string): void => {
+  setSyncValidator(target, key, customRequired());
+};
 
 class User {
   @Email()
@@ -12,7 +29,7 @@ class User {
   @Pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
   @MaxLength(24)
   @MinLength(4)
-  @Required()
+  @CustomRequired()
   password: string;
 
   @RequiredTrue()

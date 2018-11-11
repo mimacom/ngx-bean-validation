@@ -2,6 +2,21 @@
 
 > Idea was taken from [Bean Validation](https://beanvalidation.org/)
 
+1. [Supports](#supports)
+2. [Install](#install)
+3. [What is the problem?](#what-is-the-problem)
+4. [Contains](#contains)
+5. [Does not support](#does-not-support)
+6. [Contributing](#contribution)
+
+## Supports
+From Angular 5.
+
+## Install
+Install with npm
+
+`npm install ngx-bean-validation --save-dev`
+
 ## What is the problem?
 
 Reactive forms are very powerful, but they become painful for big forms:
@@ -109,6 +124,7 @@ Now we can use our classes as interface and reuse them for reactive forms.
 This library provides `BeanFormGroup` class for creation `FormGroup` from annotated classes.
 
 ### Annotations for default angular validators:
+* Email
 * Max
 * MaxLength
 * Min
@@ -133,6 +149,17 @@ This library provides `BeanFormGroup` class for creation `FormGroup` from annota
 ## How to use:
 Example how to create your own validator annotation:
 ```typescript
+import {AbstractControl, ValidationErrors, ValidatorFn} from '@angular/forms';
+import {setSyncValidator, AnnotationFunction} from 'ngx-bean-validation';
+
+const customAngularValidator = (someValue: any): ValidatorFn => {
+  return (control: AbstractControl): ValidationErrors => {
+    return {
+      custom: 'Custom validator'
+    };
+  };
+};
+
 export const CustomValidator = (someValue: any): AnnotationFunction => (target: object, key: string): void => {
   setSyncValidator(target, key, customAngularValidator(someValue));
 };
@@ -140,6 +167,8 @@ export const CustomValidator = (someValue: any): AnnotationFunction => (target: 
 
 Now you can put it in your class:
 ```typescript
+import {CustomValidator} from './custom-validator';
+
 class User {
   @CustomValidator('someValue')
   name: string
@@ -148,12 +177,16 @@ class User {
 
 And create form group:
 ```typescript
+import {FromGroup} from '@angular/forms';
+import {User} from './user';
+import {BeanFormGroup} from 'ngx-bean-validation';
+
 class Component {
   userForm: FromGroup = new BeanFormGroup(new User())
 }
 ```
 
-## Does`t support
+## Does not support
 * Async validators
 * FormControl and FormArray them self, only inside FormGroup
 

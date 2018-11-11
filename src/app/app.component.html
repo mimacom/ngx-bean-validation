@@ -25,6 +25,7 @@
                [class.is-invalid]="password.invalid"
                formControlName="password"
                placeholder="Password">
+        {{password.errors | json}}
       </div>
       <div class="form-group form-check">
         <input type="checkbox"

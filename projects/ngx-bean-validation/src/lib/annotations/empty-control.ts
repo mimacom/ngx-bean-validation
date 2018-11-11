@@ -2,9 +2,7 @@
 import {AnnotationFunction, checkAnnotationConflicts, FormMetadata, setName} from './common';
 
 /**
- * If you don`t need to validate field, just use this annotation, otherwise you will not get formControl in ControlConfig
- * @returns {AnnotationFunction}
- * @constructor
+ * If you don`t need to validate field, just use this annotation, otherwise you will not get formControl in the ControlConfig
  */
 export const EmptyControl = (): AnnotationFunction => (target: any, key: string) => {
   let metadata = Reflect.get(target, setName(key)) as FormMetadata;
