@@ -10,7 +10,7 @@
 6. [Contributing](#contribution)
 
 ## Supports
-Tested only Angular 6, but it should work on lower versions as well.
+From Angular 5.
 
 ## Install
 Install with npm

@@ -1,6 +1,22 @@
 {
   "name": "ngx-bean-validation",
-  "version": "0.0.1",
+  "version": "0.0.5",
+  "author": {
+    "name": "jurr90",
+    "email": "jurr90@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mimacom/ngx-bean-validation"
+  },
+  "keywords": [
+    "angular",
+    "angular6",
+    "reactive-forms",
+    "forms",
+    "bean-validation",
+    "validation"
+  ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
