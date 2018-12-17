@@ -1,6 +1,6 @@
 {
   "name": "ngx-bean-validation",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "author": {
     "name": "jurr90",
     "email": "jurr90@gmail.com"
@@ -19,6 +19,7 @@
   ],
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "proxy-polyfill": "0.3.0"
   }
 }
